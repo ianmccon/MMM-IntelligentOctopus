@@ -20,6 +20,8 @@ Module.register("MMM-IntelligentOctopus", {
 		displayDays: 7,
 		elecMedium: 10,
 		elecHigh: 20,
+		fixedRateTarrif: false,
+        elecCostKWHFixed: 0.35,
 		elecCostKWHPeak: 0.3572,
 		elecCostKWHoffPeak: 0.1372,
 		elecPeakStartTime: '05:30',
@@ -69,13 +71,14 @@ Module.register("MMM-IntelligentOctopus", {
 		const startingDate = new Date();
 		const sevenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 7));
 		
-		// var datestring = ("0" + sevenDaysAgo.getFullYear() + "-" + ("0"+(sevenDaysAgo.getMonth()+1)).slice(-2) + "-" + sevenDaysAgo.getDate()).slice(-2) + " " + ("0" + sevenDaysAgo.getHours()).slice(-2) + ":" + ("0" + sevenDaysAgo.getMinutes()).slice(-2);
-		// var dateString = sevenDaysAgo.getFullYear() + "-" + ("0"+(sevenDaysAgo.getMonth()+1)).slice(-2) + "-" + ("0" + sevenDaysAgo.getDate()).slice(-2) + "T00:00:00Z";
-
 
 		if (this.config.elecApiUrl != "") {
 			var elecDataRequest = new XMLHttpRequest();
-			elecDataRequest.open("GET", this.config.elecApiUrl + "?group_by=hour&page_size=350", true);
+			if (this.config.fixedRateTarrif)
+				elecDataRequest.open("GET", this.config.elecApiUrl + "?group_by=day", true);
+			else {
+				elecDataRequest.open("GET", this.config.elecApiUrl + "?group_by=hour&page_size=350", true);
+			}
 			elecDataRequest.setRequestHeader("Authorization", "Basic " + hash);
 			elecDataRequest.onreadystatechange = function() {
 				Log.log("getElecData() readyState=" + this.readyState);
@@ -275,24 +278,46 @@ Module.register("MMM-IntelligentOctopus", {
 			if (this.elecDataRequest) {
 				for (i = 0; i < intDays; i++) {
 					if (typeof this.elecDataRequest[i] !== 'undefined') {
-						var edate = new Date(this.elecDataRequest[i].date);
-						if (edate.toLocaleDateString() == dteLoop.toLocaleDateString()) {
 
-							var strCol = "white"; //could be green
-							var totalIntVal = this.elecDataRequest[i].periodTotalKwh.toFixed(this.config.decimalPlaces);
-							var peakIntVal = this.elecDataRequest[i].peakConsumption.toFixed(this.config.decimalPlaces);
-							var offpeakIntVal = this.elecDataRequest[i].offpeakConsumption.toFixed(this.config.decimalPlaces);
-							if (totalIntVal >= this.config.elecMedium) strCol = "color:orange";
-							if (totalIntVal >= this.config.elecHigh) strCol = "color:red";
+						if (this.config.fixedRateTarrif) {
+							var edate = new Date(this.elecDataRequest.results[i].interval_start);
+							if(edate.toLocaleDateString() == dteLoop.toLocaleDateString()) {
+								
+								var strCol = "white";//could be green
+								var intVal = this.elecDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
+								if(intVal>=this.config.elecMedium)strCol="color:orange";
+								if(intVal>=this.config.elecHigh)strCol="color:red";
 
-							strTotalUse = totalIntVal + " kWh";
-							strCost = "";
-							if (this.config.elecCostKWHPeak > 0 && this.config.elecCostKWHoffPeak > 0)
-								strCost = "£" + (Math.round(((offpeakIntVal * this.config.elecCostKWHoffPeak) + (peakIntVal * this.config.elecCostKWHPeak) + this.config.elecCostSC) * 100) / 100).toFixed(2);
-							//display electricity energy usage and cost here
-							thiseleclabel.innerHTML = "&nbsp;&nbsp;<span style=\"" + strCol + "\">" + offpeakIntVal + "/" + peakIntVal + " (" + strTotalUse + ") " + strCost + "</span>";
-							thiseleclabel.style.textAlign = "right";
+								strUse = intVal + " kWh";
+								strCost="";
+								if(this.config.elecCostKWH>0)
+									strCost = "£" + (Math.round(((intVal * this.config.elecCostKWH)+this.config.elecCostSC) * 100)/100).toFixed(2);
 
+								//display electricity energy usage and cost here
+								thiseleclabel.innerHTML = "&nbsp;&nbsp;<span style=\"" + strCol + "\">" + strUse + " " + strCost + "</span>";
+								thiseleclabel.style.textAlign = "right";
+
+							}
+						} else {
+							var edate = new Date(this.elecDataRequest[i].date);
+							if (edate.toLocaleDateString() == dteLoop.toLocaleDateString()) {
+
+								var strCol = "white"; //could be green
+								var totalIntVal = this.elecDataRequest[i].periodTotalKwh.toFixed(this.config.decimalPlaces);
+								var peakIntVal = this.elecDataRequest[i].peakConsumption.toFixed(this.config.decimalPlaces);
+								var offpeakIntVal = this.elecDataRequest[i].offpeakConsumption.toFixed(this.config.decimalPlaces);
+								if (totalIntVal >= this.config.elecMedium) strCol = "color:orange";
+								if (totalIntVal >= this.config.elecHigh) strCol = "color:red";
+
+								strTotalUse = totalIntVal + " kWh";
+								strCost = "";
+								if (this.config.elecCostKWHPeak > 0 && this.config.elecCostKWHoffPeak > 0)
+									strCost = "£" + (Math.round(((offpeakIntVal * this.config.elecCostKWHoffPeak) + (peakIntVal * this.config.elecCostKWHPeak) + this.config.elecCostSC) * 100) / 100).toFixed(2);
+								//display electricity energy usage and cost here
+								thiseleclabel.innerHTML = "&nbsp;&nbsp;<span style=\"" + strCol + "\">" + offpeakIntVal + "/" + peakIntVal + " (" + strTotalUse + ") " + strCost + "</span>";
+								thiseleclabel.style.textAlign = "right";
+
+							}
 						}
 					}
 				}
@@ -362,46 +387,46 @@ Module.register("MMM-IntelligentOctopus", {
 		Log.log("processElecData()");
 		var self = this;
 
-		const groupByDay = self.groupBy("day");
-		var sortedData = groupByDay(data.results);	
-
+		if (this.config.fixedRateTarrif) {
+			this.elecDataRequest = data;
+			this.elecLoaded = true;
+			self.updateDom(self.config.animationSpeed);
+		} else {
 	
-		// this gives an object with dates as keys
-		const groups = data.results.reduce((groups, consumption) => {
-		  const date = consumption.interval_start.split('T')[0];
-		  if (!groups[date]) {
-		    groups[date] = [];
-		  }
-		  groups[date].push(consumption);
-		  return groups;
-		}, {});
+			// this gives an object with dates as keys
+			const groups = data.results.reduce((groups, consumption) => {
+			  const date = consumption.interval_start.split('T')[0];
+			  if (!groups[date]) {
+			    groups[date] = [];
+			  }
+			  groups[date].push(consumption);
+			  return groups;
+			}, {});
 
-		
-		// Edit: to add it in the array format instead
-		const groupArrays = Object.keys(groups).map((date) => {
-		  return {
-		    date,
-		    consumption: groups[date]
-		  };
-		});
+			
+			// Edit: to add it in the array format instead
+			const groupArrays = Object.keys(groups).map((date) => {
+			  return {
+			    date,
+			    consumption: groups[date]
+			  };
+			});
 
-		// const processedDailyData = Object.keys(groupArrays).map((date) => {
-		const processedDailyData = [];
-		for (i = 0; i < groupArrays.length; i++) {
-			const date = groupArrays[i].date;
+			// const processedDailyData = Object.keys(groupArrays).map((date) => {
+			const processedDailyData = [];
+			for (i = 0; i < groupArrays.length; i++) {
+				const date = groupArrays[i].date;
 
-			dailyConsumption = self.processDailyConsumption(groupArrays[i].consumption);
-			dailyConsumption["date"] = date;
-			processedDailyData.push(dailyConsumption)
-		};
-		// return data;
+				dailyConsumption = self.processDailyConsumption(groupArrays[i].consumption);
+				dailyConsumption["date"] = date;
+				processedDailyData.push(dailyConsumption)
+			};
+			
 
-		
-		
-
-		this.elecDataRequest = processedDailyData;
-		this.elecLoaded = true;
-		self.updateDom(self.config.animationSpeed);
+			this.elecDataRequest = processedDailyData;
+			this.elecLoaded = true;
+			self.updateDom(self.config.animationSpeed);
+		}
 	},
 
 	processDailyConsumption: function(raw) {
@@ -459,7 +484,7 @@ Module.register("MMM-IntelligentOctopus", {
 			offpeakConsumption,
 		};
 		return(data);
-		self.processElecData(data.raw);
+
 
 	},
 
