@@ -2,6 +2,8 @@
 
 "Intelligent Octopus Monitor", displays energy usage history for your Octopus Energy account. Unofficial!
 
+Electricity usage is displayed in the format **'offPeakUsage/PeakUsage (totalUsage) Cost'**
+
 ## Example
 
 ![screenshot](screenshot.jpg)
