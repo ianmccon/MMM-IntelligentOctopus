@@ -4,6 +4,8 @@
 
 Electricity usage is displayed in the format **'offPeakUsage/PeakUsage (totalUsage) Cost'**
 
+This is being actively developed at the moment so please keep your copy updated
+
 ## Example
 
 ![screenshot](screenshot.jpg)
@@ -37,7 +39,7 @@ Electricity usage is displayed in the format **'offPeakUsage/PeakUsage (totalUsa
 				elecMedium: 10,
 				elecHigh: 20,
 				fixedRateTarrif: false,
-                elecCostKWHFixed: 0.35,
+ 				elecCostKWHFixed: 0.35,
 				elecCostKWHPeak: 0.3572,
 				elecCostKWHoffPeak: 0.1372,
 				elecPeakStartTime: '05:30',
@@ -80,7 +82,7 @@ The following config.js properties can be configured.
 | 'gasHigh' | '6' | kWh values over this amount will be displayed in Red |
 | 'gasCostKWH' | '0.0331' | cost per kWh in pounds, or zero to hide display |
 | 'gasCostSC' | '0.168' | daily standing charge in pounds |
-| 'gasMeterSMETSType' | '2' | SMETS 1 meters give readings in kwh and SMETS 2 meeters give it in m^3^ |
+| 'gasMeterSMETSType' | '2' | SMETS 1 meters give readings in kwh and SMETS 2 meters give them in m<sup>3</sup>´ |
 | 'decimalPlaces' | '1' | round all kWh values to this number of decimal places |
 | 'showUpdateTime' | 'true' | true or false, to display the time the energy usage figures were last updated |
 | 'updateInterval' | '60000\*60' | delay between refresing energy usage via the API, in milliseconds (1 hour, or 60 * 60 seconds) |
@@ -88,9 +90,7 @@ The following config.js properties can be configured.
 | 'animationSpeed' | '2000' | fade in/out speed in milliseconds (2 seconds) |
 
 
-## Note
 
-Cost calcuations are based on your intelligent Octopus rates. Turn the cost display off by setting the elecCostKWH or gasCostKWH to zero.
 
 ## Disclaimer
 
