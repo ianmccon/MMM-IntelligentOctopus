@@ -1,6 +1,6 @@
 # MMM-IntelligentOctopus
 
-"Octopus Monitor", displays energy usage history for your Octopus Energy account. Unofficial!
+"Intelligent Octopus Monitor", displays energy usage history for your Octopus Energy account. Unofficial!
 
 ## Example
 
@@ -17,7 +17,7 @@
 
 ```
 	cd ~/MagicMirror/modules
-	git clone https://github.com/christopherpthomas/MMM-IntelligentOctopus.git
+	git clone https://github.com/ianmccon/MMM-IntelligentOctopus
 ```
 
 1. Add IntelligentOctopus configuration into `~/MagicMirror/config/config.js`:
@@ -38,7 +38,6 @@
 				elecCostKWHoffPeak: 0.1372,
 				elecPeakStartTime: '05:30',
 				elecPeakEndTime: '23:30',
-				gasMeterSMETSType: 1,
 				elecCostSC: 0.25,
 				gasMedium: 5,
 				gasHigh: 6,
@@ -65,7 +64,10 @@ The following config.js properties can be configured.
 | 'displayDays' | '7' | The number of days of historical energy usage to display |
 | 'elecMedium' | '10' | kWh values over this amount will be displayed in Orange |
 | 'elecHigh' | '20' | kWh values over this amount will be displayed in Red |
-| 'elecCostKWH' | '0.1372' | cost per kWh in pounds, or zero to hide display |
+| 'elecCostKWHPeak' | '0.3572' | peak cost per kwh in pounds, or zero to hide display |
+| 'elecCostKWHoffPeak' | '0.1372' | off peak cost per kwh in pounds, or zero to hide display |
+| 'elecPeakStartTime' | '05:30' | peak start time |
+| 'elecPeakEndTime' | '23:30' | peak end time |s
 | 'elecCostSC' | '0.25' | daily standing charge in pounds |
 | 'gasMedium' | '5' | kWh values over this amount will be displayed in Orange |
 | 'gasHigh' | '6' | kWh values over this amount will be displayed in Red |
@@ -77,14 +79,13 @@ The following config.js properties can be configured.
 | 'retryDelay' | '5000' | delay between failing to get a valid result from the API and trying again in milliseconds (5 seconds) |
 | 'animationSpeed' | '2000' | fade in/out speed in milliseconds (2 seconds) |
 
-## Additional customisation
-
-See comments in the main source code for a couple of other things that could be changed.
 
 ## Note
 
-Cost calcuations are based on fixed daily rates. Octopus have tiered and variable pricing models (Octopus Go and Octopus Agile) which are not currently implemented. Turn the cost display off by setting the elecCostKWH or gasCostKWH to zero.
+Cost calcuations are based on your intelligent Octopus rates. Turn the cost display off by setting the elecCostKWH or gasCostKWH to zero.
 
 ## Disclaimer
 
-This module has been hacked together very quickly! I've taken a bunch of shortcuts, such as inserting HTML and CSS inline styles, when there's probably a more elegant way to accomplish things. Recommendations for changes welcome! It's completely unofficial, but it is using the Octopus Energy (https://developer.octopus.energy) publicly available customer API, so as far as I'm concerned, that's permission enough. Supplied AS-IS. No warranties expressed or implied. Blah bla-blah. It works on my machine!
+This module has been built on top of MMM-Octomon, written by Chris Thomas. This is only for you if you are on the Intelligent Octopus tariff. If you are on a fixed rate tariff you should use [MMM-Octomon](https://github.com/christopherpthomas/MMM-OctoMon). 
+
+I welcome any suggestions for improvements. Supplied AS-IS. No warranties expressed or implied. 
