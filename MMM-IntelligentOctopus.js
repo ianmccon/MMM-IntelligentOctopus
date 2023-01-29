@@ -29,6 +29,7 @@ Module.register("MMM-IntelligentOctopus", {
 		gasHigh: 1,
 		gasCostKWH: 0.0331,
 		gasCostSC: 0.168,
+		gasMeterSMETSType: 2,
 		decimalPlaces: 2,
 		showUpdateTime: true,
 		retryDelay: 5000,
@@ -305,13 +306,20 @@ Module.register("MMM-IntelligentOctopus", {
 
 							var strCol = "white"; //could be green
 
-							var intVal = (this.gasDataRequest.results[i].consumption * 1.02264 * 38.1 / 3.6).toFixed(this.config.decimalPlaces);
-
+							if (this.config.gasMeterSMETSType == '2')
+								var intVal = (this.gasDataRequest.results[i].consumption * 1.02264 * 38.1 / 3.6).toFixed(this.config.decimalPlaces);
+							else {
+								var intVal = this.gasDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
+							}
 							if (intVal >= this.config.gasMedium) strCol = "color:orange";
 							if (intVal >= this.config.gasHigh) strCol = "color:red";
 
-							usageM3 = this.gasDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
-							strUse = usageM3 + " m<sup>3</sup>";
+							usage = this.gasDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
+							if (this.config.gasMeterSMETSType == '2')
+								strUse = usage + " m<sup>3</sup>";
+							else {
+								strUse = usage + "  kwh";
+							}
 							strCost = "";
 							if (this.config.gasCostKWH > 0)
 								strCost = "£" + (Math.round(((intVal * this.config.gasCostKWH) + this.config.gasCostSC) * 100) / 100).toFixed(2);
