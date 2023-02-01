@@ -82,7 +82,7 @@ The following config.js properties can be configured.
 | 'gasHigh' | '6' | kWh values over this amount will be displayed in Red |
 | 'gasCostKWH' | '0.0331' | cost per kWh in pounds, or zero to hide display |
 | 'gasCostSC' | '0.168' | daily standing charge in pounds |
-| 'gasMeterSMETSType' | '2' | SMETS 1 meters give readings in kwh and SMETS 2 meters give them in m<sup>3</sup>´ |
+| 'gasMeterSMETSType' | '2' | SMETS 1 meters give readings in kwh and SMETS 2 meters give them in m<sup>3</sup> |
 | 'decimalPlaces' | '1' | round all kWh values to this number of decimal places |
 | 'showUpdateTime' | 'true' | true or false, to display the time the energy usage figures were last updated |
 | 'updateInterval' | '60000\*60' | delay between refresing energy usage via the API, in milliseconds (1 hour, or 60 * 60 seconds) |

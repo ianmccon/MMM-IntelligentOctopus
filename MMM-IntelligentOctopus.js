@@ -435,7 +435,7 @@ Module.register("MMM-IntelligentOctopus", {
 		// the api returns data slightly outside of the 24h period we're interested in
 		const endDateTime = new Date(raw.map((el) => el.interval_end)[0]);
 		endDateTime.setUTCHours(0, 0, 0);
-		const startDateTime = new Date();
+		const startDateTime = new Date(endDateTime.getTime());
 		startDateTime.setDate(endDateTime.getDate() - 1);
 		startDateTime.setUTCHours(0, 0, 0);
 		// we just want the data between startDateTime and endDateTime, throw away the rest
