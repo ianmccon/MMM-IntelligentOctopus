@@ -283,7 +283,7 @@ Module.register("MMM-IntelligentOctopus", {
 							var edate = new Date(this.elecDataRequest.results[i].interval_start);
 							if(edate.toLocaleDateString() == dteLoop.toLocaleDateString()) {
 								
-								var strCol = "white";//could be green
+								var strCol = "color:green";//could be green
 								var intVal = this.elecDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
 								if(intVal>=this.config.elecMedium)strCol="color:orange";
 								if(intVal>=this.config.elecHigh)strCol="color:red";
@@ -302,7 +302,7 @@ Module.register("MMM-IntelligentOctopus", {
 							var edate = new Date(this.elecDataRequest[i].date);
 							if (edate.toLocaleDateString() == dteLoop.toLocaleDateString()) {
 
-								var strCol = "white"; //could be green
+								var strCol = "color:green"; //could be green
 								var totalIntVal = this.elecDataRequest[i].periodTotalKwh.toFixed(this.config.decimalPlaces);
 								var peakIntVal = this.elecDataRequest[i].peakConsumption.toFixed(this.config.decimalPlaces);
 								var offpeakIntVal = this.elecDataRequest[i].offpeakConsumption.toFixed(this.config.decimalPlaces);
@@ -329,15 +329,15 @@ Module.register("MMM-IntelligentOctopus", {
 						var edate = new Date(this.gasDataRequest.results[i].interval_start);
 						if (edate.toLocaleDateString() == dteLoop.toLocaleDateString()) {
 
-							var strCol = "white"; //could be green
-
+							var strCol = "color:green"; //could be green
+							var consumption = this.gasDataRequest.results[i].consumption;
 							if (this.config.gasMeterSMETSType == '2')
 								var intVal = (this.gasDataRequest.results[i].consumption * 1.02264 * 38.1 / 3.6).toFixed(this.config.decimalPlaces);
 							else {
 								var intVal = this.gasDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
 							}
-							if (intVal >= this.config.gasMedium) strCol = "color:orange";
-							if (intVal >= this.config.gasHigh) strCol = "color:red";
+							if (consumption >= this.config.gasMedium) strCol = "color:orange";
+							if (consumption >= this.config.gasHigh) strCol = "color:red";
 
 							usage = this.gasDataRequest.results[i].consumption.toFixed(this.config.decimalPlaces);
 							if (this.config.gasMeterSMETSType == '2')
