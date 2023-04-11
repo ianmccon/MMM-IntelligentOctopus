@@ -1,5 +1,12 @@
 # MMM-IntelligentOctopus
 
+
+## IMPORTANT
+
+If you are already using MMM-IntelligentOctopus in your project you will need to make a change to your config.js file as the example below
+
+## Description
+
 "Intelligent Octopus Monitor", displays energy usage history for your Octopus Energy account. Unofficial!
 
 Electricity usage is displayed in the format **'offPeakUsage/PeakUsage (totalUsage) Cost'**
@@ -32,13 +39,14 @@ This is being actively developed at the moment so please keep your copy updated
 		position: 'bottom_right',
 		header: '<img src="modules/MMM-IntelligentOctopus/public/octobw.jpg" style="width:20px;vertical-align:bottom;"/> Octopus Energy',
 		config: {
-				elecApiUrl: 'https://api.octopus.energy/v1/electricity-meter-points/[ELECTRIC-MPAN]/meters/[METER_SERIAL]/consumption/',
-				gasApiUrl: 'https://api.octopus.energy/v1/gas-meter-points/[GAS-MPRN]/meters/[GAS-SERIAL]/consumption/?group_by=day',
 				api_key: '[YOUR-API-KEY]',
+				elec_mpan: '[ELECTRIC-MPAN]',
+				elec_serial: '[ELEC-SERIAL]',
+				gas_mprn: '[GAS-MPRN]',
+				elec_serial: '[GAS-SERIAL]',
 				displayDays: 7,
 				elecMedium: 10,
 				elecHigh: 20,
-				fixedRateTarrif: false,
  				elecCostKWHFixed: 0.35,
 				elecCostKWHPeak: 0.3572,
 				elecCostKWHoffPeak: 0.1372,
@@ -71,8 +79,6 @@ The following config.js properties can be configured.
 | 'displayDays' | '7' | The number of days of historical energy usage to display |
 | 'elecMedium' | '10' | kWh values over this amount will be displayed in Orange |
 | 'elecHigh' | '20' | kWh values over this amount will be displayed in Red |
-| 'fixedRateTarrif' | false | true or false, If you are on a fixed rate tarrif set this to true |
-| 'elecCostKWHFixed | '0.3517'| fixed rate tarrif cost per kwh in pounds. Only takes effect if fixedRateTariff is true |
 | 'elecCostKWHPeak' | '0.3572' | peak cost per kwh in pounds, or zero to hide display |
 | 'elecCostKWHoffPeak' | '0.1372' | off peak cost per kwh in pounds, or zero to hide display |
 | 'elecPeakStartTime' | '05:30' | peak start time |
