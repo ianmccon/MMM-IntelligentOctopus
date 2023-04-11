@@ -78,7 +78,7 @@ Module.register("MMM-IntelligentOctopus", {
 
                 if (this.config.elecApiUrl != "") {
                         var elecDataRequest = new XMLHttpRequest();
-                        elecDataRequest.open("GET", this.config.elecApiUrl + "?page_size=+" + (this.config.displayDays * 48), true);
+                        elecDataRequest.open("GET", this.config.elecApiUrl + "?page_size=+" + ((this.config.displayDays + 1) * 48), true);
                         elecDataRequest.setRequestHeader("Authorization", "Basic " + hash);
                         elecDataRequest.onreadystatechange = function() {
                                 Log.log("getElecData() readyState=" + this.readyState);
