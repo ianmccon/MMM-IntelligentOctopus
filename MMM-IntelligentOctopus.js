@@ -13,9 +13,11 @@
 Module.register("MMM-IntelligentOctopus", {
         // Default module config.
         defaults: {
-                elecApiUrl: "",
-                gasApiUrl: "",
                 api_key: "",
+                elec_mpan: '',
+                elec_serial: '',
+                gas_mpan: '',
+                gas_serial: '',
                 updateInterval: 60000 * 60,
                 displayDays: 7,
                 elecMedium: 10,
@@ -42,6 +44,10 @@ Module.register("MMM-IntelligentOctopus", {
                 var self = this;
                 var elecDataRequest = null;
                 var gasDataRequest = null;
+                
+                this.config.elecApiUrl = 'https://api.octopus.energy/v1/electricity-meter-points/' + this.config.elec_mpan + '/meters/' + this.config.elec_serial + '/consumption/';
+                this.config.gasApiUrl = 'https://api.octopus.energy/v1/gas-meter-points/' + this.config.gas_mpan + '/meters/' + this.config.gas_serial + '/consumption/?group_by=day';
+
 
                 this.elecLoaded = false;
                 this.gasLoaded = false;
