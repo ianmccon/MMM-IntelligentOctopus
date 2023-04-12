@@ -43,7 +43,7 @@ This is being actively developed at the moment so please keep your copy updated
 				elec_mpan: '[ELECTRIC-MPAN]',
 				elec_serial: '[ELEC-SERIAL]',
 				gas_mprn: '[GAS-MPRN]',
-				elec_serial: '[GAS-SERIAL]',
+				gas_serial: '[GAS-SERIAL]',
 				displayDays: 7,
 				elecMedium: 10,
 				elecHigh: 20,
